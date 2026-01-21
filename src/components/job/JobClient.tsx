@@ -2,6 +2,7 @@
 
 import JobCard from "@/components/job/JobCard";
 import Pagination from "@/components/shared/Pagination";
+import useDebounce from "@/hooks/useDebounce";
 import { useJobs } from "@/hooks/useJobs";
 import { useEffect, useMemo, useState } from "react";
 
@@ -12,7 +13,11 @@ export default function JobsClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const { jobs, loading, error } = useJobs();
 
-  const search = query.trim().toLowerCase();
+ 
+
+  const debouncedQuery=useDebounce(query,300)
+
+  const search = debouncedQuery.trim().toLowerCase();
 
   const filteredJobs = useMemo(() => {
     if (!search) return jobs;
@@ -47,7 +52,7 @@ export default function JobsClient() {
           placeholder="Search by title, company or location"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-1 focus:ring-black-400"
         />
       </div>
 

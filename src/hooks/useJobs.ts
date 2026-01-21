@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react";
 import { Job, JobsApiResponse } from "@/types/job";
 
-
-
 export function useJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
