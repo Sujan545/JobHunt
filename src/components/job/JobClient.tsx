@@ -3,65 +3,74 @@
 import JobCard from "@/components/job/JobCard";
 import Pagination from "@/components/shared/Pagination";
 import { useJobs } from "@/hooks/useJobs";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const ITEMS_PER_PAGE = 6;
 
 export default function JobsClient() {
-    const [search, setSearch] = useState("");
-    const [location, setLocation] = useState("");
-    const [currentPage, setCurrentPage] = useState<number>(1);
+  const [query, setQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const { jobs, loading, error } = useJobs();
 
-    const { jobs, loading, error } = useJobs({ search, location });
-    const totalPages = Math.ceil(jobs.length / ITEMS_PER_PAGE);
+  const search = query.trim().toLowerCase();
 
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const currentJobs = jobs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const filteredJobs = useMemo(() => {
+    if (!search) return jobs;
 
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [search, location]);
+    return jobs.filter((job) => {
+      const geo = job.jobGeo?.toLowerCase() || "";
+      const title = job.jobTitle?.toLowerCase() || "";
+      const company = job.companyName?.toLowerCase() || "";
 
-    return (
-        <>
-            {/* Search Form */}
-            <div className="flex flex-col md:flex-row gap-3 mb-8">
-                <input
-                    type="text"
-                    placeholder="Job title or keyword"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
-                />
-                <input
-                    type="text"
-                    placeholder="Location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
-                />
-            </div>
+      return (
+        geo.includes(search) ||
+        title.includes(search) ||
+        company.includes(search)
+      );
+    });
+  }, [jobs, search]);
 
-            {/* Jobs Grid */}
-            {loading && <p>Loading jobs...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading && !error && jobs.length === 0 && (
-                <p>No jobs found. Try adjusting your filters.</p>
-            )}
+  const totalPages = Math.ceil(filteredJobs.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentJobs = filteredJobs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {currentJobs.map((job) => (
-                    <JobCard key={job.id} job={job} />
-                ))}
-            </div>
+  useEffect(() => {
+    setCurrentPage(1); // Reset page when searching
+  }, [search]);
 
-            {totalPages > 1 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                />
-            )}
-        </>
-    );
+  return (
+    <>
+      {/* 🔍 Search Input */}
+      <div className="flex gap-3 mb-8">
+        <input
+          type="text"
+          placeholder="Search by title, company or location"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      {/* Jobs Grid */}
+      {loading && <p>Loading jobs...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {!loading && !error && filteredJobs.length === 0 && (
+        <p>No jobs found.</p>
+      )}
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {currentJobs.map((job) => (
+          <JobCard key={job.id} job={job} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
+    </>
+  );
 }

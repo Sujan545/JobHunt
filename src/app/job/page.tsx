@@ -7,8 +7,6 @@ export default function JobsPage() {
       <h1 className="text-3xl font-semibold text-gray-900 mb-6">
         Browse Jobs
       </h1>
-
-    
       <JobsClient />
     </div>
   );
