@@ -52,7 +52,7 @@ export default function Hero() {
   return (
     <>
     
-      <section className="relative bg-linear-to-br mx-auto max-w-full pt-14">
+      <section className="relative bg-linear-to-br mx-auto px-20 max-w-full pt-14">
         <div className="text-center">
           <div className="px-6">
             <span className="inline-block mb-4 rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-700">
@@ -113,7 +113,7 @@ export default function Hero() {
       </section>
 
 
-      <section className="max-w-full mx-auto px-6 py-6">
+      <section className="w-full mx-auto px-20 py-6">
         {loading && <p>Loading jobs...</p>}
         {error && <p className="text-red-500">{error}</p>}
 
@@ -123,7 +123,7 @@ export default function Hero() {
           </p>
         )}
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {currentJobs.map((job) => (
             <JobCard key={job.id} job={job} />
           ))}

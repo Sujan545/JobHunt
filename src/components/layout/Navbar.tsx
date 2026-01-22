@@ -13,8 +13,8 @@ export default function Navbar() {
       : "flex items-center gap-1 hover:text-black";
 
   return (
-    <nav className="w-full shadow-lg fixed bg-white z-10">
-      <div className="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className="w-full shadow-lg fixed px-20 bg-white z-10">
+      <div className="max-w-full mx-auto  py-4 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold text-gray-900">
           JobHunt
         </Link>

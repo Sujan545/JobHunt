@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Briefcase, Layers } from "lucide-react";
 import { Job } from "@/types/job";
@@ -8,16 +7,18 @@ type Props = {
 };
 
 export default function JobCard({ job }: Props) {
+  console.log("LOGO URL:", job.companyLogo);
   return (
     <div className="group relative rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-lg">
       <Link href={job.url}>
         {/* Company Logo */}
         <div className="flex items-center gap-4">
           <div className="relative h-12 w-12 overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
-            <Image
-              src={job.companyLogo}
+            <img
+              src={job.companyLogo || "/logo-placeholder.png"}
               alt={job.companyName}
-              fill
+              loading="lazy"
+              referrerPolicy="no-referrer"
               className="object-contain p-2"
             />
           </div>

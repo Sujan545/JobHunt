@@ -3,8 +3,8 @@ import { Github, Linkedin, Mail, Briefcase } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 border-t mt-20">
-      <div className="max-w-full mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="bg-gray-100  shadow-lg">
+      <div className="max-w-full  mx-auto px-20 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
 
         {/* Brand */}
         <div>
@@ -58,7 +58,7 @@ export default function Footer() {
 
       </div>
 
-      <div className="text-center text-sm text-gray-500 py-4 border-t">
+      <div className="text-center text-sm text-gray-500 py-4 border-t border-gray-200">
         © {new Date().getFullYear()} JobHuntX. All rights reserved.
       </div>
     </footer>

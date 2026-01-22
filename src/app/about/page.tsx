@@ -2,8 +2,8 @@ import { Briefcase, Users, Target, Rocket } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <section className="bg-white py-24">
-      <div className="max-w-5xl mx-auto px-6">
+    <section className="bg-white px-20 py-24">
+      <div className="max-w-full  mx-auto ">
 
         {/* Heading */}
         <div className="text-center mb-16">
